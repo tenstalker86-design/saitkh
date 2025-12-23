@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Подача заявки — CyberTour</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      font-family:Arial,sans-serif;
+      background:#0f0f1a;
+      color:#fff;
+      display:flex;
+      flex-direction:column;
+      overflow:hidden;
+    }
+    header{
+      padding:20px 40px;
+      background:#141428;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+    header h1{
+      font-family:Orbitron,sans-serif;
+      color:#8b5cf6;
+      letter-spacing:2px;
+    }
+    nav a{
+      color:#fff;
+      margin-left:20px;
+      text-decoration:none;
+      font-weight:bold;
+    }
+    nav a:hover{color:#8b5cf6}
+    main{
+      flex:1;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+    .form-container{
+      background:#1a1a2e;
+      padding:40px;
+      border-radius:14px;
+      width:100%;
+      max-width:420px;
+    }
+    h2{text-align:center;color:#8b5cf6;margin-bottom:25px}
+    label{display:block;margin-top:16px;font-size:14px}
+    input{
+      width:100%;
+      padding:12px;
+      margin-top:6px;
+      border-radius:8px;
+      border:none;
+      background:#0f0f1a;
+      color:#fff;
+    }
+    button{
+      width:100%;
+      margin-top:30px;
+      padding:14px;
+      background:#8b5cf6;
+      border:none;
+      border-radius:10px;
+      font-weight:bold;
+      cursor:pointer;
+    }
+    button:hover{background:#7c3aed}
+    .success{
+      text-align:center;
+      color:#22c55e;
+      font-weight:bold;
+      margin-top:20px;
+      display:none;
+    }
+    footer{
+      background:#141428;
+      padding:15px;
+      text-align:center;
+      font-size:13px;
+      color:#777;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>CYBERTOUR</h1>
+  <nav>
+    <a href="cities.html">Турниры</a>
+    <a href="profile.html">Профиль</a>
+  </nav>
+</header>
+
+<main>
+  <div class="form-container">
+    <h2>Заявка на турнир</h2>
+
+    <form id="appForm">
+      <label>Название команды</label>
+      <input id="team" required>
+
+      <label>Имя капитана</label>
+      <input id="captain" required>
+
+      <label>Контакт (Telegram & Discord)</label>
+      <input id="contact" required>
+
+      <label>Количество игроков</label>
+      <input id="players" type="number" min="1" max="5" required>
+
+      <button type="submit">Отправить заявку</button>
+    </form>
+
+    <div class="success" id="success">
+      Заявка отправлена ✔<br>Ожидайте подтверждения
+    </div>
+  </div>
+</main>
+
+<footer>© 2025 CyberTour | Казахстан</footer>
+
+<script>
+document.getElementById("appForm").addEventListener("submit", function(e){
+  e.preventDefault();
+
+  const team = document.getElementById("team").value.trim();
+  const captain = document.getElementById("captain").value.trim();
+  const contact = document.getElementById("contact").value.trim();
+  const players = Number(document.getElementById("players").value);
+
+  if(!team || !captain || !contact || !players){
+    alert("Заполните все поля");
+    return;
+  }
+
+  // Добавляем статус заявки
+  const application = {
+    tournament: "CS2 Tournament",
+    team,
+    captain,
+    contact,
+    players,
+    status: "pending" // Статус по умолчанию
+  };
+
+  const apps = JSON.parse(localStorage.getItem("applications")) || [];
+  apps.push(application);
+  localStorage.setItem("applications", JSON.stringify(apps));
+
+  this.reset();
+  this.style.display = "none";
+  document.getElementById("success").style.display = "block";
+
+  setTimeout(() => {
+    window.location.href = "profile.html";
+  }, 2000);
+});
+</script>
+
+<script>
+if (!localStorage.getItem("user")) {
+  window.location.href = "auth.html";
+}
+
+if (localStorage.getItem("role") !== "player") {
+  alert("Только игроки могут подавать заявки");
+  window.location.href = "profile.html";
+}
+</script>
+
+</body>
+</html>

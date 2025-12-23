@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Организатор — CyberTour</title>
+
+  <style>
+  body {
+    background: #0f0f1a;
+    color: white;
+    font-family: Arial;
+    padding: 40px;
+  }
+  h1 {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  .list {
+    display: grid;
+    gap: 20px;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  .card {
+    background: #1a1a2e;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, .3);
+  }
+  .card h3 {
+    margin: 0 0 10px;
+  }
+  .card p {
+    margin: 5px 0;
+    color: #ccc;
+  }
+  .actions {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+  }
+  button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  .accept { background: #2ecc71; color: #000; }
+  .reject { background: #e74c3c; color: #fff; }
+  .pending { background: #facc15; padding: 5px; border-radius: 5px; }
+  .approved { background: #22c55e; padding: 5px; border-radius: 5px; }
+  .rejected { background: #ef4444; padding: 5px; border-radius: 5px; }
+  .empty {
+    text-align: center;
+    color: #888;
+  }
+  </style>
+</head>
+
+<body>
+
+<h1>Заявки</h1>
+
+<div id="list" class="list"></div>
+<div id="empty" class="empty">Заявок пока нет</div>
+
+<script>
+const list = document.getElementById("list");
+const empty = document.getElementById("empty");
+
+let apps = JSON.parse(localStorage.getItem("applications")) || [];
+
+function render() {
+  list.innerHTML = "";
+
+  if (apps.length === 0) {
+    empty.style.display = "block";
+    return;
+  }
+
+  empty.style.display = "none";
+
+  apps.forEach((app, index) => {
+    const card = document.createElement("div");
+    card.className = "card";
+
+    // Выводим заявку и ее статус
+    card.innerHTML = `
+      <h3>${app.team}</h3>
+      <p><b>Капитан:</b> ${app.captain}</p>
+      <p><b>Контакт:</b> ${app.contact}</p>
+      <p><b>Игроков:</b> ${app.players}</p>
+      <p><b>Статус:</b> 
+        <span class="${app.status}">${app.status === 'pending' ? 'Ожидает' : app.status === 'approved' ? 'Принята' : 'Отклонена'}</span>
+      </p>
+    `;
+
+    const actions = document.createElement("div");
+    actions.className = "actions";
+
+    const acceptBtn = document.createElement("button");
+    acceptBtn.className = "accept";
+    acceptBtn.textContent = "Принять";
+    acceptBtn.addEventListener("click", () => {
+      changeStatus(index, "approved");  // меняем статус на "Принята"
+    });
+
+    const rejectBtn = document.createElement("button");
+    rejectBtn.className = "reject";
+    rejectBtn.textContent = "Отклонить";
+    rejectBtn.addEventListener("click", () => {
+      changeStatus(index, "rejected");  // меняем статус на "Отклонена"
+    });
+
+    actions.appendChild(acceptBtn);
+    actions.appendChild(rejectBtn);
+
+    card.appendChild(actions);
+    list.appendChild(card);
+  });
+}
+
+// Функция изменения статуса заявки
+function changeStatus(index, status) {
+  apps[index].status = status;  // меняем статус
+  localStorage.setItem("applications", JSON.stringify(apps));  // сохраняем изменения
+  render();  // обновляем список заявок
+}
+
+render();  // Отображаем заявки при загрузке страницы
+</script>
+
+<script>
+if (!localStorage.getItem("user")) {
+  window.location.href = "auth.html";
+}
+
+if (localStorage.getItem("role") !== "organizer") {
+  window.location.href = "profile.html";
+}
+</script>
+
+</body>
+</html>
+

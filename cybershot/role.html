@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Выбор роли — CyberTour</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+
+body{
+  font-family:Arial,sans-serif;
+  background:#0f0f1a;
+  color:#fff;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+
+header{
+  padding:20px 40px;
+  background:#141428;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+header h1{
+  font-family:Orbitron,sans-serif;
+  color:#8b5cf6;
+  letter-spacing:2px;
+}
+
+main{
+  flex:1;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.role-box{
+  text-align:center;
+}
+
+.cards{
+  display:flex;
+  gap:30px;
+  margin-top:40px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+
+.card{
+  background:#1a1a2e;
+  padding:40px;
+  width:260px;
+  border-radius:14px;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.card:hover{
+  transform:scale(1.07);
+  box-shadow:0 0 25px rgba(139,92,246,.6);
+}
+
+.card h3{
+  color:#8b5cf6;
+  margin-bottom:10px;
+}
+
+footer{
+  background:#141428;
+  padding:15px;
+  text-align:center;
+  font-size:13px;
+  color:#777;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>CYBERTOUR</h1>
+</header>
+
+<main>
+  <div class="role-box">
+    <h2>Выберите роль</h2>
+    <p style="margin-top:10px;">Роль можно изменить позже</p>
+
+    <div class="cards">
+      <div class="card" onclick="setRole('player')">
+        <h3>Игрок</h3>
+        <p>Участие в турнирах и команды</p>
+      </div>
+
+      <div class="card" onclick="setRole('organizer')">
+        <h3>Организатор</h3>
+        <p>Создание турниров и управление заявками</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>© 2025 CyberTour | Казахстан</footer>
+
+<script>
+// если не зарегистрирован — назад
+if (!localStorage.getItem("user")) {
+  window.location.href = "auth.html";
+}
+
+function setRole(role){
+  localStorage.setItem("role", role);
+
+  if(role === "player"){
+    window.location.href = "cities.html";
+  } else {
+    window.location.href = "organizer.html";
+  }
+}
+</script>
+
+</body>
+</html>

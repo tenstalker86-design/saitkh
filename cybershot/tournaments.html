@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Турниры — CyberTour</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+
+  <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #0f0f1a;
+  color: #ffffff;
+
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+header {
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #141428;
+}
+
+header h1 {
+  font-family: 'Orbitron', sans-serif;
+  color: #8b5cf6;
+  letter-spacing: 2px;
+}
+
+nav a {
+  color: #fff;
+  margin-left: 20px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+nav a:hover {
+  color: #8b5cf6;
+}
+
+main {
+  flex: 1;
+  padding: 50px 40px;
+  animation: fadeInUp 0.8s ease;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.tournaments {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.tournament-card {
+  background: #1a1a2e;
+  padding: 30px;
+  border-radius: 14px;
+  transition: all 0.3s ease;
+}
+
+.tournament-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px rgba(139, 92, 246, 0.6);
+}
+
+.tournament-card h3 {
+  color: #8b5cf6;
+  margin-bottom: 10px;
+}
+
+.info {
+  font-size: 14px;
+  margin-bottom: 6px;
+  color: #ccc;
+}
+
+.join-btn {
+  margin-top: 15px;
+  display: inline-block;
+  padding: 10px 18px;
+  background: #8b5cf6;
+  color: #000;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.join-btn:hover {
+  background: #a78bfa;
+}
+
+footer {
+  background: #141428;
+  padding: 20px;
+  text-align: center;
+  font-size: 13px;
+  color: #777;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>CYBERTOUR</h1>
+  <nav>
+    <a href="cities.html">Турниры</a>
+    <a href="profile.html">Профиль</a>
+  </nav>
+</header>
+
+<main>
+  <h2>Турниры в выбранном городе</h2>
+
+  <div class="tournaments">
+    <!-- Турниры подставятся через JS -->
+  </div>
+</main>
+
+<footer>
+  © 2025 CyberTour | Казахстан
+</footer>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const city = params.get("city");
+
+const tournamentsData = {
+  almaty: [
+    { name: "CS2 Open Cup", date: "22 марта 2025", fee: "5 000 ₸", prize: "100 000 ₸" },
+    { name: "Cyber Night League", date: "28 марта 2025", fee: "бесплатно", prize: "50 000 ₸" },
+    { name: "Amateur Cup", date: "5 апреля 2025", fee: "3 000 ₸", prize: "70 000 ₸" }
+  ],
+  astana: [
+    { name: "Astana Pro Series", date: "25 марта 2025", fee: "7 000 ₸", prize: "150 000 ₸" }
+  ],
+  shymkent: [
+    { name: "South Cup", date: "30 марта 2025", fee: "3 000 ₸", prize: "80 000 ₸" }
+  ]
+};
+
+const container = document.querySelector(".tournaments");
+const title = document.querySelector("h2");
+
+if (city && tournamentsData[city]) {
+  title.textContent = "Турниры в городе " + city.charAt(0).toUpperCase() + city.slice(1);
+
+  container.innerHTML = "";
+
+  tournamentsData[city].forEach(t => {
+    container.innerHTML += `
+      <div class="tournament-card">
+        <h3>${t.name}</h3>
+        <div class="info">📅 ${t.date}</div>
+        <div class="info">💰 Взнос: ${t.fee}</div>
+        <div class="info">🏆 Приз: ${t.prize}</div>
+        <a href="#" class="join-btn">Подать заявку</a>
+      </div>
+    `;
+  });
+} else {
+  container.innerHTML = "<p>Турниры не найдены для выбранного города.</p>";
+}
+</script>
+
+</body>
+</html>

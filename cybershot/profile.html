@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Профиль — CyberTour</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+
+body{
+  font-family:Arial,sans-serif;
+  background:#0f0f1a;
+  color:#fff;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+
+header{
+  padding:20px 40px;
+  background:#141428;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+header h1{
+  font-family:Orbitron,sans-serif;
+  color:#8b5cf6;
+  letter-spacing:2px;
+}
+
+nav a{
+  color:#fff;
+  margin-left:20px;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+nav a:hover{color:#8b5cf6}
+
+main{
+  flex:1;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.profile{
+  text-align:center;
+  animation:fadeInUp .8s ease;
+}
+
+.profile h2{margin-bottom:10px}
+.profile p{opacity:.85}
+
+.actions{
+  display:flex;
+  gap:30px;
+  margin-top:40px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+
+.card{
+  background:#1a1a2e;
+  padding:35px;
+  width:260px;
+  border-radius:14px;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.card:hover{
+  transform:scale(1.07);
+  box-shadow:0 0 25px rgba(139,92,246,.6);
+}
+
+.card h3{color:#8b5cf6;margin-bottom:8px}
+.card p{font-size:14px}
+
+.logout{
+  margin-top:35px;
+  font-size:14px;
+  opacity:.7;
+  cursor:pointer;
+}
+
+.logout:hover{opacity:1}
+
+footer{
+  background:#141428;
+  padding:15px;
+  text-align:center;
+  font-size:13px;
+  color:#777;
+}
+
+@keyframes fadeInUp{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>CYBERTOUR</h1>
+  <nav>
+    <a href="profile.html">Профиль</a>
+  </nav>
+</header>
+
+<main>
+  <div class="profile">
+    <h2 id="username">Профиль</h2>
+    <p id="roleText"></p>
+
+    <div class="actions" id="actions"></div>
+
+    <div class="logout" onclick="logout()">Выйти из аккаунта</div>
+  </div>
+</main>
+
+<footer>© 2025 CyberTour | Казахстан</footer>
+
+<script>
+// 🔒 защита
+if (!localStorage.getItem("user")) {
+  window.location.href = "auth.html";
+}
+
+// данные
+const user = JSON.parse(localStorage.getItem("user"));
+const role = localStorage.getItem("role");
+
+document.getElementById("username").innerText = user.name || "Профиль";
+document.getElementById("roleText").innerText =
+  role === "player" ? "Роль: Игрок" : "Роль: Организатор";
+
+const actions = document.getElementById("actions");
+
+// 🎮 игрок
+if (role === "player") {
+  actions.innerHTML = `
+    <div class="card" onclick="location.href='cities.html'">
+      <h3>Турниры</h3>
+      <p>Поиск и участие</p>
+    </div>
+  `;
+}
+
+// 🧠 организатор
+if (role === "organizer") {
+  actions.innerHTML = `
+    <div class="card" onclick="location.href='organizer.html'">
+      <h3>Мои турниры</h3>
+      <p>Заявки и управление</p>
+    </div>
+  `;
+}
+
+// 🚪 выход
+function logout(){
+  localStorage.clear();
+  window.location.href = "auth.html";
+}
+</script>
+
+</body>
+</html>
